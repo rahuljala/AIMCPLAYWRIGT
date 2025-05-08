@@ -1,15 +1,40 @@
 {
   "name": "aimcpplaywrigt",
   "version": "1.0.0",
-  "description": "",
+  "description": "Playwright automation tests for DEMOQA website",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test tests/smoke/",
+    "test:regression": "playwright test tests/regression/",
+    "test:elements": "playwright test tests/elements.spec.js",
+    "test:forms": "playwright test tests/forms.spec.js",
+    "test:alerts": "playwright test tests/alerts-frames-windows.spec.js",
+    "test:widgets": "playwright test tests/widgets.spec.js",
+    "test:interactions": "playwright test tests/interactions.spec.js",
+    "test:parallel": "playwright test --workers=4",
+    "test:serial": "playwright test --workers=1",
+    "test:headed": "playwright test --headed",
+    "test:browser": "playwright test --project=chromium",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "report:open": "npx playwright show-report playwright-report",
+    "clean": "rimraf test-results && rimraf playwright-report && rimraf allure-results",
+    "pretest": "npm run clean"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "demoqa"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.52.0",
-    "@types/node": "^22.15.15"
+    "@types/node": "^22.15.15",
+    "rimraf": "^5.0.10"
   }
 }
