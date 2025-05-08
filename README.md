@@ -18,13 +18,31 @@ The framework follows the Page Object Model (POM) pattern, implemented using AI 
 
 ```
 project/
-├── pages/               # Page Object classes
-│   ├── BasePage.js     # Common functionality
-│   └── HomePage.js     # Homepage specific actions
-├── tests/              # Test specifications
-│   └── homepage.spec.js # Homepage test cases
-├── playwright.config.js # Test configuration
-└── package.json        # Project dependencies
+├── pages/                           # Page Object classes
+│   ├── BasePage.js                 # Common functionality
+│   ├── HomePage.js                 # Homepage specific actions
+│   ├── ElementsPage.js            # Elements page actions
+│   ├── FormsPage.js              # Forms handling
+│   ├── AlertsFramesWindowsPage.js # Alerts & frames handling
+│   ├── WidgetsPage.js            # Widgets interactions
+│   └── InteractionsPage.js        # Drag & drop, etc.
+├── tests/                          # Test specifications
+│   ├── elements.spec.js           # Elements tests
+│   ├── forms.spec.js             # Forms tests
+│   ├── alerts-frames-windows.spec.js
+│   ├── widgets.spec.js
+│   ├── interactions.spec.js
+│   ├── smoke/                    # Smoke test suite
+│   │   └── smoke.spec.js
+│   └── regression/              # Regression test suite
+│       └── regression.spec.js
+├── testdata/                      # Test data files
+│   ├── TestData.js              # Test data objects
+│   └── sample.jpg               # Test assets
+├── playwright.config.js           # Test configuration
+├── test-scenarios.md             # Test case documentation
+├── test-coverage-map.md         # Coverage documentation
+└── package.json                  # Project dependencies
 ```
 
 ### 3. Key Components Created by AI
