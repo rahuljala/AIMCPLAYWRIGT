@@ -40,37 +40,37 @@ jobs:
           name: playwright-report
           path: playwright-report/
 
-      - name: Send email notification
-        if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: Playwright Test Run ${{ job.status }}
-          to: jalarahulreddy516@gmail.com
-          from: Playwright CI <jalarahulreddy516@gmail.com>
-          body: |
-            The Playwright test run has completed with status: ${{ job.status }}.
-            See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      # - name: Send email notification
+      #   if: failure()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.SMTP_USERNAME }}
+      #     password: ${{ secrets.SMTP_PASSWORD }}
+      #     subject: Playwright Test Run ${{ job.status }}
+      #     to: jalarahulreddy516@gmail.com
+      #     from: Playwright CI <jalarahulreddy516@gmail.com>
+      #     body: |
+      #       The Playwright test run has completed with status: ${{ job.status }}.
+      #       See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      - name: Send HTML report via email
-        if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: Playwright Test Run ${{ job.status }}
-          to: jalarahulreddy516@gmail.com
-          from: Playwright CI <jalarahulreddy516@gmail.com>
-          body: |
-            The Playwright test run has completed with status: ${{ job.status }}.
-            See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          attachments: |
-            playwright-report/index.html
+      # - name: Send HTML report via email
+      #   if: failure()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.SMTP_USERNAME }}
+      #     password: ${{ secrets.SMTP_PASSWORD }}
+      #     subject: Playwright Test Run ${{ job.status }}
+      #     to: jalarahulreddy516@gmail.com
+      #     from: Playwright CI <jalarahulreddy516@gmail.com>
+      #     body: |
+      #       The Playwright test run has completed with status: ${{ job.status }}.
+      #       See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      #     attachments: |
+      #       playwright-report/index.html
 
   smoke:
     if: github.event_name == 'push' || (github.event_name == 'schedule' && github.event.schedule == '0 10 * * *')
@@ -94,37 +94,37 @@ jobs:
         with:
           name: playwright-report-smoke
           path: playwright-report/
-      - name: Send email notification
-        if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: Playwright Smoke Test Run ${{ job.status }}
-          to: jalarahulreddy516@gmail.com
-          from: Playwright CI <jalarahulreddy516@gmail.com>
-          body: |
-            The Playwright smoke test run has completed with status: ${{ job.status }}.
-            See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      # - name: Send email notification
+      #   if: failure()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.SMTP_USERNAME }}
+      #     password: ${{ secrets.SMTP_PASSWORD }}
+      #     subject: Playwright Smoke Test Run ${{ job.status }}
+      #     to: jalarahulreddy516@gmail.com
+      #     from: Playwright CI <jalarahulreddy516@gmail.com>
+      #     body: |
+      #       The Playwright smoke test run has completed with status: ${{ job.status }}.
+      #       See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      - name: Send HTML report via email
-        if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: Playwright Smoke Test Run ${{ job.status }}
-          to: jalarahulreddy516@gmail.com
-          from: Playwright CI <jalarahulreddy516@gmail.com>
-          body: |
-            The Playwright smoke test run has completed with status: ${{ job.status }}.
-            See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          attachments: |
-            playwright-report/index.html
+      # - name: Send HTML report via email
+      #   if: failure()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.SMTP_USERNAME }}
+      #     password: ${{ secrets.SMTP_PASSWORD }}
+      #     subject: Playwright Smoke Test Run ${{ job.status }}
+      #     to: jalarahulreddy516@gmail.com
+      #     from: Playwright CI <jalarahulreddy516@gmail.com>
+      #     body: |
+      #       The Playwright smoke test run has completed with status: ${{ job.status }}.
+      #       See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      #     attachments: |
+      #       playwright-report/index.html
 
   regression:
     if: github.event_name == 'schedule' && github.event.schedule == '0 12 */2 * *'
@@ -148,34 +148,34 @@ jobs:
         with:
           name: playwright-report-regression
           path: playwright-report/
-      - name: Send email notification
-        if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: Playwright Regression Test Run ${{ job.status }}
-          to: jalarahulreddy516@gmail.com
-          from: Playwright CI <jalarahulreddy516@gmail.com>
-          body: |
-            The Playwright regression test run has completed with status: ${{ job.status }}.
-            See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      # - name: Send email notification
+      #   if: failure()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.SMTP_USERNAME }}
+      #     password: ${{ secrets.SMTP_PASSWORD }}
+      #     subject: Playwright Regression Test Run ${{ job.status }}
+      #     to: jalarahulreddy516@gmail.com
+      #     from: Playwright CI <jalarahulreddy516@gmail.com>
+      #     body: |
+      #       The Playwright regression test run has completed with status: ${{ job.status }}.
+      #       See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      - name: Send HTML report via email
-        if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: Playwright Regression Test Run ${{ job.status }}
-          to: jalarahulreddy516@gmail.com
-          from: Playwright CI <jalarahulreddy516@gmail.com>
-          body: |
-            The Playwright regression test run has completed with status: ${{ job.status }}.
-            See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          attachments: |
-            playwright-report/index.html
+      # - name: Send HTML report via email
+      #   if: failure()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.SMTP_USERNAME }}
+      #     password: ${{ secrets.SMTP_PASSWORD }}
+      #     subject: Playwright Regression Test Run ${{ job.status }}
+      #     to: jalarahulreddy516@gmail.com
+      #     from: Playwright CI <jalarahulreddy516@gmail.com>
+      #     body: |
+      #       The Playwright regression test run has completed with status: ${{ job.status }}.
+      #       See details at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      #     attachments: |
+      #       playwright-report/index.html
