@@ -74,8 +74,20 @@ export class InteractionsPage extends BasePage {
         const items = await this.page.$$(this.sortableItems);
         const sourceItem = items[sourceIndex];
         const targetItem = items[targetIndex];
-        
-        await sourceItem.dragTo(targetItem);
+
+        const sourceBound = await sourceItem.boundingBox();
+        const targetBound = await targetItem.boundingBox();
+
+        await this.page.mouse.move(
+            sourceBound.x + sourceBound.width / 2,
+            sourceBound.y + sourceBound.height / 2
+        );
+        await this.page.mouse.down();
+        await this.page.mouse.move(
+            targetBound.x + targetBound.width / 2,
+            targetBound.y + targetBound.height / 2
+        );
+        await this.page.mouse.up();
     }
 
     // Selectable methods
@@ -117,7 +129,20 @@ export class InteractionsPage extends BasePage {
     async dragToDroppable() {
         const draggable = await this.page.$(this.draggable);
         const droppable = await this.page.$(this.droppable);
-        await draggable.dragTo(droppable);
+
+        const draggableBound = await draggable.boundingBox();
+        const droppableBound = await droppable.boundingBox();
+
+        await this.page.mouse.move(
+            draggableBound.x + draggableBound.width / 2,
+            draggableBound.y + draggableBound.height / 2
+        );
+        await this.page.mouse.down();
+        await this.page.mouse.move(
+            droppableBound.x + droppableBound.width / 2,
+            droppableBound.y + droppableBound.height / 2
+        );
+        await this.page.mouse.up();
     }
 
     async switchToAcceptTab() {

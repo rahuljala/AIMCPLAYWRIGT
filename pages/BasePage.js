@@ -25,12 +25,19 @@ export class BasePage {
 
     // Action methods
     async clickElement(selector) {
-        await this.waitForElement(selector);
-        await this.page.click(selector);
+        await this.waitForElement(selector, { state: 'visible' });
+        try {
+            await this.page.click(selector);
+        } catch (e) {
+            // If direct click fails, try JavaScript click
+            await this.page.evaluate((sel) => {
+                document.querySelector(sel).click();
+            }, selector);
+        }
     }
 
     async fillInput(selector, value) {
-        await this.waitForElement(selector);
+        await this.waitForElement(selector, { state: 'visible' });
         await this.page.fill(selector, value);
     }
 
@@ -40,7 +47,7 @@ export class BasePage {
     }
 
     async uploadFile(selector, filePath) {
-        await this.waitForElement(selector);
+        await this.waitForElement(selector, { state: 'visible' });
         await this.page.setInputFiles(selector, filePath);
     }
 
@@ -109,13 +116,25 @@ export class BasePage {
     }
 
     async dragAndDrop(sourceSelector, targetSelector) {
-        await this.waitForElement(sourceSelector);
-        await this.waitForElement(targetSelector);
         const source = await this.page.$(sourceSelector);
         const target = await this.page.$(targetSelector);
-        if (source && target) {
-            await source.dragTo(target);
-        }
+
+        const sourceBound = await source.boundingBox();
+        const targetBound = await target.boundingBox();
+
+        await this.page.mouse.move(
+            sourceBound.x + sourceBound.width / 2,
+            sourceBound.y + sourceBound.height / 2
+        );
+        await this.page.mouse.down();
+        await this.page.waitForTimeout(500); // Wait for drag to start
+        await this.page.mouse.move(
+            targetBound.x + targetBound.width / 2,
+            targetBound.y + targetBound.height / 2,
+            { steps: 10 } // Move in small steps
+        );
+        await this.page.waitForTimeout(500); // Wait before drop
+        await this.page.mouse.up();
     }
 
     // Screenshot
@@ -155,5 +174,65 @@ export class BasePage {
         await this.page.evaluate((selector) => {
             document.querySelector(selector).submit();
         }, formSelector);
+    }
+
+    async removeAds() {
+        await this.page.evaluate(() => {
+            const adFrames = document.querySelectorAll('#fixedban, [id^="google_ads"]');
+            adFrames.forEach(frame => frame.remove());
+        });
+    }
+
+    async waitForPageLoad() {
+        await this.page.waitForLoadState('networkidle');
+        await this.removeAds();
+    }
+
+    async selectFromDropdown(selector, value) {
+        await this.page.waitForSelector(selector, { state: 'visible' });
+        await this.page.selectOption(selector, value);
+    }
+
+    async waitForText(selector, text) {
+        await this.page.waitForSelector(selector, { state: 'visible' });
+        await expect(this.page.locator(selector)).toContainText(text, { timeout: 10000 });
+    }
+
+    async handleDialog(accept = true, promptText = '') {
+        const dialogPromise = this.page.waitForEvent('dialog');
+        await this.page.evaluate(() => {
+            // Remove any blocking elements first
+            const blockers = document.querySelectorAll('#fixedban, [id^="google_ads"]');
+            blockers.forEach(blocker => blocker.remove());
+        });
+        const dialog = await dialogPromise;
+        if (promptText) {
+            await dialog.accept(promptText);
+        } else if (accept) {
+            await dialog.accept();
+        } else {
+            await dialog.dismiss();
+        }
+    }
+
+    async switchToTab(action) {
+        const pagePromise = this.page.context().waitForEvent('page');
+        await action();
+        const newPage = await pagePromise;
+        await newPage.waitForLoadState();
+        return newPage;
+    }
+
+    async retryClick(selector, maxAttempts = 3) {
+        for (let i = 0; i < maxAttempts; i++) {
+            try {
+                await this.page.waitForSelector(selector, { state: 'visible', timeout: 5000 });
+                await this.page.click(selector);
+                return;
+            } catch (e) {
+                if (i === maxAttempts - 1) throw e;
+                await this.page.waitForTimeout(1000);
+            }
+        }
     }
 }

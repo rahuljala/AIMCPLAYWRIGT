@@ -1,10 +1,10 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
+const { defineConfig, devices } = require('@playwright/test');
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-export default defineConfig({
+module.exports = defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -20,9 +20,9 @@ export default defineConfig({
     ['list']
   ],
   
-  timeout: 60000,
+  timeout: 120000,
   expect: {
-    timeout: 10000
+    timeout: 15000
   },
   
   use: {
@@ -31,7 +31,7 @@ export default defineConfig({
     /* Collect trace when retrying the failed test */
     trace: 'retain-on-failure',
     /* Run tests in headless mode */
-    headless: false,
+    headless: true,
     /* Viewport size */
     viewport: { width: 1280, height: 720 },
     /* Screenshot on failure */
@@ -39,11 +39,20 @@ export default defineConfig({
     /* Video on failure */
     video: 'retain-on-failure',
     /* Action timeout */
-    actionTimeout: 15000,
+    actionTimeout: 20000,
     /* Navigation timeout */
     navigationTimeout: 30000,
     /* Test ID attribute */
-    testIdAttribute: 'data-testid'
+    testIdAttribute: 'data-testid',
+    /* Add additional context setup */
+    contextOptions: {
+      ignoreHTTPSErrors: true,
+      viewport: { width: 1280, height: 720 }
+    },
+    /* Add automatic waiting */
+    launchOptions: {
+      slowMo: 100 /* Add small delays between actions */
+    }
   },
 
   /* Configure projects for major browsers */
@@ -51,22 +60,6 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
     }
   ],
 

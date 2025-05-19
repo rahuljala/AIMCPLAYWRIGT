@@ -283,3 +283,29 @@ npx playwright test --headed
 
 For detailed test scenarios and steps, refer to `test-scenarios.md`.
 For test coverage details, see `test-coverage-map.md`.
+
+## Playwright CI/CD with Email HTML Report
+
+This project is configured to run Playwright tests automatically using GitHub Actions. On test failure, the workflow will send the Playwright-generated HTML report (including screenshots if configured) as an email attachment to jalarahulreddy516@gmail.com.
+
+### How it works
+- **Smoke tests** run on every push to `main` and daily at 5 AM EST (10 AM UTC).
+- **Regression tests** run every other day at 7 AM EST (12 PM UTC).
+- On failure, you will receive an email with the HTML report attached.
+
+#### To ensure screenshots are included in the report:
+- In your `playwright.config.js`, set:
+  ```js
+  use: {
+    screenshot: 'only-on-failure', // or 'on' for all tests
+  }
+  ```
+- The HTML report will show test status and screenshots for failed tests.
+
+#### Email setup
+- The workflow uses SMTP credentials stored as GitHub secrets (`SMTP_USERNAME` and `SMTP_PASSWORD`).
+- The recipient and sender are set to: jalarahulreddy516@gmail.com
+
+---
+
+For more details, see `.github/workflows/playwright.yml`.
